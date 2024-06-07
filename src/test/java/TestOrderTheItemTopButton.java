@@ -16,7 +16,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(Parameterized.class)
-public class TestOrderTheItemBottomButton {
+public class TestOrderTheItemTopButton {
     private final WebDriver driver;
 
     public String userNameInput;
@@ -26,8 +26,8 @@ public class TestOrderTheItemBottomButton {
     public String dateInput;
     public String commentInput;
 
-    public TestOrderTheItemBottomButton( String userNameInput, String lastNameInput,
-                                      String addressInput, String phoneNumber,String dateInput, String commentInput){
+    public TestOrderTheItemTopButton( String userNameInput, String lastNameInput,
+                                      String addressInput, String phoneNumber, String dateInput, String commentInput){
         this.userNameInput=userNameInput;
         this.lastNameInput=lastNameInput;
         this.addressInput=addressInput;
@@ -44,20 +44,18 @@ public class TestOrderTheItemBottomButton {
 
     public static Object[][] getFieldsForOrder (){
         return new Object[][]{
-                {"Мария","Сидорова","кеанешнг 13", "79221110512","11.07.2011", "Хочу заказ!!!!"},
-                {"Евгений","Киров","Улица ИНТЕРЕСНАЯ 12", "79221110536","26.07.2045", "КАК МОЖНО СКОРЕЕ"},
-                {"ВАНЕГЕ","Олег","просто улица 2", "79221110578", "12.12.2030", "Я жду"},
+                {"Анастасия","Ковалева","Долгобродская 11", "79221110500","05.02.2024", "Позвонить за 1 час до доставки."},
+                {"Евгений","Сидоров","улица Ясеневая 56а", "79221110501", "06.12.2025", "Доставить после 18"},
         };
     }
 
     @Test
     public void orderTheItem() {
 
-        MainView mainView = new MainView(driver);
-        mainView.clickOnCookieButton();
-        mainView.waitForLoadHeader();
-        mainView.scrollPage();
-        mainView.clickOnOrderButtonAtTheBottom();
+         MainView mainView = new MainView(driver);
+         mainView.clickOnCookieButton();
+         mainView.waitForLoadHeader();
+         mainView.clickOnOrderButtonAtTheTop();
 
         driver.findElement(By.xpath("//input[@placeholder='* Имя']")).sendKeys(userNameInput);
         driver.findElement(By.xpath(".//input[@placeholder='* Фамилия']")).sendKeys(lastNameInput);
@@ -70,10 +68,10 @@ public class TestOrderTheItemBottomButton {
 
         driver.findElement(By.xpath(".//input[@placeholder='* Телефон: на него позвонит курьер']")).sendKeys(phoneNumber);
 
-        orderView.clickOnTheNextButton();
+       orderView.clickOnTheNextButton();
 
-        driver.findElement(By.xpath(".//input[@placeholder='* Когда привезти самокат']")).sendKeys(dateInput);
-        orderView.clickOnDatePicker();
+       driver.findElement(By.xpath(".//input[@placeholder='* Когда привезти самокат']")).sendKeys(dateInput);
+       orderView.clickOnDatePicker();
 
         orderView.clickOnTheTerm();
         orderView.selectTheTerm();
@@ -99,4 +97,5 @@ public class TestOrderTheItemBottomButton {
     public void quitTheWindow(){
         driver.quit();
     }
+
 }
