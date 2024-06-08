@@ -39,10 +39,10 @@ public class MainView {
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();",element);
     };
 
-    public String itemLink1 = ".//div[@id = 'accordion__heading-%d']";
+    public String theHeaderItemLink = ".//div[@id = 'accordion__heading-%d']";
     public void clickOnItems(int itemIndex)
     {
-        var clickItem = driver.findElement(By.xpath(String.format(itemLink1, itemIndex)));
+        var clickItem = driver.findElement(By.xpath(String.format(theHeaderItemLink, itemIndex)));
         System.out.println(clickItem);
         clickItem.click();
     };
@@ -54,6 +54,5 @@ public class MainView {
     public void clickOnOrderButtonAtTheBottom(){
         driver.findElement(orderButtonAtTheBottom).click();
     }
-
 
 }

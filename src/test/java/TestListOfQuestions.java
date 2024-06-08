@@ -1,28 +1,20 @@
-import io.github.bonigarcia.wdm.WebDriverManager;
 import model.MainView;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TestListOfQuestions {
+public class TestListOfQuestions extends BaseSetup {
 
-   private final WebDriver driver;
-//
+
     int itemIndex;
     String itemText;
 
     public TestListOfQuestions(int itemIndex, String itemText){
         this.itemIndex=itemIndex;
         this.itemText=itemText;
-        WebDriverManager.chromedriver().setup();
-        driver=new ChromeDriver();
-        driver.get("https://qa-scooter.praktikum-services.ru/");
     };
 
     @Parameterized.Parameters
@@ -53,11 +45,6 @@ public class TestListOfQuestions {
         String actualText = mainView.getItemLink(itemIndex);
 
         assertEquals(itemText, actualText);
-    };
-
-    @After
-    public void quitFromApp(){
-      driver.quit();
     };
 
 }

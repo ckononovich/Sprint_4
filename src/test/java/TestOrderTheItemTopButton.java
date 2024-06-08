@@ -1,23 +1,15 @@
-import io.github.bonigarcia.wdm.WebDriverManager;
 import model.ConfirmationPopup;
 import model.MainView;
 import model.OrderView;
 import model.SuccessOrderPopup;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(Parameterized.class)
-public class TestOrderTheItemTopButton {
-    private final WebDriver driver;
+public class TestOrderTheItemTopButton extends BaseSetup {
 
     public String userNameInput;
     public String lastNameInput;
@@ -34,10 +26,6 @@ public class TestOrderTheItemTopButton {
         this.phoneNumber=phoneNumber;
         this.dateInput=dateInput;
         this.commentInput=commentInput;
-
-        WebDriverManager.chromedriver().setup();
-        driver=new ChromeDriver();
-        driver.get("https://qa-scooter.praktikum-services.ru/");
     }
 
     @Parameterized.Parameters
@@ -57,29 +45,17 @@ public class TestOrderTheItemTopButton {
          mainView.waitForLoadHeader();
          mainView.clickOnOrderButtonAtTheTop();
 
-        driver.findElement(By.xpath("//input[@placeholder='* Имя']")).sendKeys(userNameInput);
-        driver.findElement(By.xpath(".//input[@placeholder='* Фамилия']")).sendKeys(lastNameInput);
-        driver.findElement(By.xpath(".//input[@placeholder='* Адрес: куда привезти заказ']")).sendKeys(addressInput);
-
         OrderView orderView=new OrderView(driver);
+        orderView.setUsersDetailsOnTheFirstPage(userNameInput,lastNameInput,addressInput,phoneNumber);
         orderView.clickOnMetroStationSelector();
-
         orderView.clickOnMetroStation();
-
-        driver.findElement(By.xpath(".//input[@placeholder='* Телефон: на него позвонит курьер']")).sendKeys(phoneNumber);
-
-       orderView.clickOnTheNextButton();
-
-       driver.findElement(By.xpath(".//input[@placeholder='* Когда привезти самокат']")).sendKeys(dateInput);
-       orderView.clickOnDatePicker();
-
+        orderView.clickOnTheNextButton();
+        orderView.setDateOfTheOrder(dateInput);
+        orderView.clickOnDatePicker();
         orderView.clickOnTheTerm();
         orderView.selectTheTerm();
-
         orderView.clickOnCheckboxOption();
-
-        driver.findElement(By.xpath(".//input[@placeholder = 'Комментарий для курьера']")).sendKeys(commentInput);
-
+        orderView.setComment(commentInput);
         orderView.clickOnOrderButton();
 
         ConfirmationPopup confirmationPopup=new ConfirmationPopup(driver);
@@ -91,11 +67,6 @@ public class TestOrderTheItemTopButton {
         String textOfMessage = successPopup.getStatusOfTheOrder();
 
         assertThat(textOfMessage, containsString("Заказ оформлен"));
-    }
-    @After
-
-    public void quitTheWindow(){
-        driver.quit();
     }
 
 }
