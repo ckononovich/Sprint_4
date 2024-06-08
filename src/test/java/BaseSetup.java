@@ -9,8 +9,8 @@ public abstract class BaseSetup {
     WebDriver driver;
  @Before
     public void generalSetUp(){
-     WebDriverManager.firefoxdriver().setup();
-     driver=new FirefoxDriver();
+     WebDriverManager.chromedriver().setup();
+     driver=new ChromeDriver();
      driver.get("https://qa-scooter.praktikum-services.ru/");
  }
 
